@@ -47,7 +47,6 @@ function AppContent() {
       <header className="bg-white dark:bg-surface-800 shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
             <h1 className="text-xl font-bold">ShowSpot India</h1>
-            <h1 className="text-xl font-bold">ShowSpot</h1>
           <div className="flex items-center gap-2">
             <button
               onClick={toggleLanguage}
@@ -59,12 +58,11 @@ function AppContent() {
             <button
               onClick={toggleDarkMode}
               className="btn-icon bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 focus:ring-primary dark:focus:ring-primary-light"
-            className="btn-icon bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 focus:ring-primary dark:focus:ring-primary-light"
-            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+            </button>
           </div>
-          </button>
         </div>
       </header>
 
