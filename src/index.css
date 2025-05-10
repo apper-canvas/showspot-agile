@@ -51,19 +51,35 @@
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+    @apply px-4 py-2 rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none relative overflow-hidden shadow-sm hover:shadow-md active:shadow-inner transform hover:-translate-y-0.5 active:translate-y-0;
   }
   
   .btn-primary {
-    @apply btn bg-primary text-white hover:bg-primary-dark focus:ring-primary-dark;
+    @apply btn bg-gradient-to-r from-primary to-primary-light text-white hover:from-primary-dark hover:to-primary focus:ring-primary-dark active:from-primary-dark active:to-primary-dark;
   }
   
   .btn-secondary {
-    @apply btn bg-secondary text-white hover:bg-secondary-dark focus:ring-secondary-dark;
+    @apply btn bg-gradient-to-r from-secondary to-secondary-light text-white hover:from-secondary-dark hover:to-secondary focus:ring-secondary-dark active:from-secondary-dark active:to-secondary-dark;
   }
   
   .btn-outline {
-    @apply btn border border-primary text-primary hover:bg-primary/10 focus:ring-primary;
+    @apply btn bg-transparent border border-primary text-primary hover:bg-primary/5 focus:ring-primary active:bg-primary/10;
+  }
+  
+  .btn-accent {
+    @apply btn bg-gradient-to-r from-accent to-amber-400 text-surface-900 font-semibold hover:brightness-105 focus:ring-amber-500 active:brightness-95;
+  }
+  
+  .btn-glass {
+    @apply btn bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 focus:ring-white/50 active:bg-white/25;
+  }
+  
+  .btn-light {
+    @apply btn bg-white dark:bg-surface-700 text-surface-700 dark:text-surface-200 border border-surface-200 dark:border-surface-600 hover:bg-surface-50 dark:hover:bg-surface-600 focus:ring-surface-300 dark:focus:ring-surface-500;
+  }
+  
+  .btn-icon {
+    @apply p-2 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none hover:shadow-sm;
   }
   
   .input-field {

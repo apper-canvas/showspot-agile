@@ -197,7 +197,7 @@ export default function Home() {
               </div>
               <button
                 type="submit"
-                className="bg-accent hover:bg-amber-400 text-surface-900 font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="btn-accent py-3 px-6"
               >
                 Find Events
               </button>
@@ -299,7 +299,7 @@ export default function Home() {
                     <button
                       className={`py-2 px-4 rounded-lg font-medium text-sm ${
                         event.available
-                          ? 'bg-primary text-white hover:bg-primary-dark'
+                          ? 'btn-primary text-sm py-2 px-4'
                           : 'bg-surface-200 dark:bg-surface-700 text-surface-500 cursor-not-allowed'
                       }`}
                       disabled={!event.available}

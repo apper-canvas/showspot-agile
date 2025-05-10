@@ -47,7 +47,7 @@ function App() {
           </div>
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 transition-colors"
+            className="btn-icon bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 focus:ring-primary dark:focus:ring-primary-light"
             aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
