@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LocalizationProvider, useLocalization } from './context/LocalizationContext';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import getIcon from './utils/iconUtils';
 
-function App() {
+function AppContent() {
   const [darkMode, setDarkMode] = useState(() => {
     // Check for user preference in localStorage or use system preference
     const savedMode = localStorage.getItem('darkMode');
@@ -15,6 +16,8 @@ function App() {
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
+  
+  const { language, toggleLanguage, t } = useLocalization();
 
   useEffect(() => {
     // Update document class when dark mode changes
@@ -36,21 +39,31 @@ function App() {
   };
 
   const MoonIcon = getIcon('Moon');
+  const GlobeIcon = getIcon('Globe');
   const SunIcon = getIcon('Sun');
 
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-white dark:bg-surface-800 shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-2 text-primary-dark dark:text-primary-light">
+            <h1 className="text-xl font-bold">ShowSpot India</h1>
             <h1 className="text-xl font-bold">ShowSpot</h1>
-          </div>
-          <button
-            onClick={toggleDarkMode}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleLanguage}
+              className="btn-icon bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 focus:ring-primary dark:focus:ring-primary-light"
+              aria-label="Toggle language"
+            >
+              <GlobeIcon size={20} /> <span className="ml-1 text-xs font-medium">{language.toUpperCase()}</span>
+            </button>
+            <button
+              onClick={toggleDarkMode}
+              className="btn-icon bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 focus:ring-primary dark:focus:ring-primary-light"
             className="btn-icon bg-surface-100 dark:bg-surface-700 text-surface-700 dark:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-600 focus:ring-primary dark:focus:ring-primary-light"
             aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+          </div>
           </button>
         </div>
       </header>
@@ -84,5 +97,14 @@ function App() {
     </div>
   );
 }
+// Root component that provides context
+function App() {
+  return (
+    <LocalizationProvider>
+      <AppContent />
+    </LocalizationProvider>
+  );
+}
+
 
 export default App;

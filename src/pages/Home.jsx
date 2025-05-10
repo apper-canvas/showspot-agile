@@ -3,66 +3,68 @@ import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import getIcon from '../utils/iconUtils';
 import MainFeature from '../components/MainFeature';
+import { formatCurrency, formatDate } from '../utils/localization';
+import { useLocalization } from '../context/LocalizationContext';
 
 // Sample event data - in a real app this would come from an API
 const featuredEvents = [
   {
     id: 1,
-    title: "Hamilton: The Musical",
+    title: "Jawan: The Musical Experience",
     category: "Theater",
     date: "Fri, May 15, 2023 • 8:00 PM",
-    venue: "Broadway Theater",
-    price: "From $99",
-    image: "https://images.unsplash.com/photo-1503095396549-807759245b35?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    venue: "NCPA Mumbai",
+    price: 999,
+    image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     available: true
   },
   {
     id: 2,
-    title: "Taylor Swift: The Eras Tour",
+    title: "Arijit Singh: One World Tour",
     category: "Concert",
     date: "Sat, Jun 10, 2023 • 7:30 PM",
-    venue: "Madison Square Garden",
-    price: "From $189",
+    venue: "DY Patil Stadium, Mumbai",
+    price: 2500,
     image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     available: true
   },
   {
     id: 3,
-    title: "NBA Finals: Lakers vs. Celtics",
+    title: "IPL Finals: Mumbai Indians vs. Chennai Super Kings",
     category: "Sports",
     date: "Sun, Jun 18, 2023 • 6:00 PM",
-    venue: "Crypto.com Arena",
-    price: "From $250",
+    venue: "Wankhede Stadium, Mumbai",
+    price: 1500,
     image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     available: false
   },
   {
     id: 4,
-    title: "Comic Con 2023",
+    title: "Delhi Comic Con 2023",
     category: "Exhibition",
     date: "Jul 20-23, 2023 • All Day",
-    venue: "Javits Center",
-    price: "From $65",
+    venue: "IEML, Greater Noida",
+    price: 850,
     image: "https://images.unsplash.com/photo-1608889476561-6242cfdbf622?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     available: true
   },
   {
     id: 5,
-    title: "The Weeknd: After Hours Tour",
+    title: "A.R. Rahman Live in Concert",
     category: "Concert",
     date: "Fri, Jul 7, 2023 • 8:30 PM",
-    venue: "Barclays Center",
-    price: "From $129",
+    venue: "Jawaharlal Nehru Stadium, Delhi",
+    price: 1800,
     image: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     available: true
   },
   {
     id: 6,
-    title: "The Lion King",
+    title: "Mughal-e-Azam: The Musical",
     category: "Theater",
     date: "Multiple Dates",
-    venue: "Minskoff Theatre",
-    price: "From $89",
+    venue: "Nita Mukesh Ambani Cultural Centre, Mumbai",
+    price: 1200,
     image: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     available: true
   }
@@ -86,6 +88,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const { t, language } = useLocalization();
   const [filteredEvents, setFilteredEvents] = useState(featuredEvents);
   
   // Icon declarations
@@ -148,6 +151,16 @@ export default function Home() {
       default: return TicketIcon;
     }
   };
+  // Format price with currency symbol
+  const formatPrice = (price) => {
+    if (typeof price === 'number') {
+      return `From ${formatCurrency(price)}`;
+    }
+    // If it's already a string (legacy data), return as is
+    return price;
+  };
+  
+  
   
   return (
     <div className="container mx-auto px-4 py-6">
@@ -165,7 +178,7 @@ export default function Home() {
               Find Your Perfect Entertainment Experience
             </h1>
             <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Discover concerts, movies, sports events, and more happening near you.
+              Discover concerts, movies, sports events, and more happening across India.
             </p>
             
             <form 
@@ -199,7 +212,7 @@ export default function Home() {
                 type="submit"
                 className="btn-accent py-3 px-6"
               >
-                Find Events
+                {t('findEvents')}
               </button>
             </form>
           </div>
@@ -238,7 +251,7 @@ export default function Home() {
       {/* Events Grid */}
       <section className="mb-16">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Featured Events</h2>
+          <a href="#" className="text-primary flex items-center gap-1 font-medium hover:underline">
           <a href="#" className="text-primary flex items-center gap-1 font-medium hover:underline">
             View all <ArrowRightIcon size={16} />
           </a>
@@ -295,7 +308,7 @@ export default function Home() {
                     <span>{event.venue}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <div className="font-semibold text-lg">{event.price}</div>
+                    <div className="font-semibold text-lg">{formatPrice(event.price)}</div>
                     <button
                       className={`py-2 px-4 rounded-lg font-medium text-sm ${
                         event.available

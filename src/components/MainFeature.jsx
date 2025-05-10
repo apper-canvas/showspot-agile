@@ -2,28 +2,30 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 import getIcon from '../utils/iconUtils';
+import { formatCurrency, formatDate } from '../utils/localization';
+import { useLocalization } from '../context/LocalizationContext';
 
 // Sample data
 const movieData = {
   id: "mov-123",
-  title: "Dune: Part Two",
-  genre: "Sci-Fi/Adventure",
-  duration: "156 minutes",
-  rating: "PG-13",
-  director: "Denis Villeneuve",
-  releaseDate: "March 1, 2024",
-  description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+  title: "Brahmastra: Part Two - Dev",
+  genre: "Fantasy/Action",
+  duration: "165 minutes",
+  rating: "UA",
+  director: "Ayan Mukerji",
+  releaseDate: "December 14, 2024",
+  description: "The second installment in the Astraverse trilogy follows Shiva as he learns more about his connection to the Brahmastra and his destiny.",
   poster: "https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
   backdrop: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
-  cast: ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson", "Josh Brolin"],
-  languages: ["English", "Spanish", "Hindi"],
+  cast: ["Ranbir Kapoor", "Alia Bhatt", "Amitabh Bachchan", "Shah Rukh Khan"],
+  languages: ["Hindi", "Tamil", "Telugu", "Malayalam", "Kannada"],
   formats: ["2D", "3D", "IMAX"],
 };
 
 const theaters = [
-  { id: "th1", name: "CineStar Multiplex", location: "Downtown", distance: "2.5 miles", showTimes: ["10:30 AM", "1:15 PM", "4:00 PM", "7:45 PM", "10:30 PM"] },
-  { id: "th2", name: "PVR Cinema", location: "Westfield Mall", distance: "3.8 miles", showTimes: ["11:00 AM", "2:30 PM", "5:15 PM", "8:00 PM", "11:15 PM"] },
-  { id: "th3", name: "INOX Cinemas", location: "City Center", distance: "1.2 miles", showTimes: ["9:45 AM", "12:30 PM", "3:45 PM", "6:30 PM", "9:15 PM"] },
+  { id: "th1", name: "PVR Icon", location: "Phoenix Palladium, Mumbai", distance: "2.5 km", showTimes: ["10:30 AM", "1:15 PM", "4:00 PM", "7:45 PM", "10:30 PM"] },
+  { id: "th2", name: "INOX Megaplex", location: "R City Mall, Ghatkopar", distance: "3.8 km", showTimes: ["11:00 AM", "2:30 PM", "5:15 PM", "8:00 PM", "11:15 PM"] },
+  { id: "th3", name: "Cinepolis", location: "Viviana Mall, Thane", distance: "12.5 km", showTimes: ["9:45 AM", "12:30 PM", "3:45 PM", "6:30 PM", "9:15 PM"] },
 ];
 
 const seatMap = [
@@ -48,6 +50,7 @@ export default function MainFeature() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState(movieData);
   const [ticketCount, setTicketCount] = useState(1);
+  const { t, language } = useLocalization();
   const [dates, setDates] = useState([]);
   
   // Declare all icons used in the component
@@ -76,8 +79,8 @@ export default function MainFeature() {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       
-      nextSevenDays.push({
-        date: date.toISOString().split('T')[0], // YYYY-MM-DD
+        dayNum: date.getDate(), 
+        month: new Intl.DateTimeFormat('en-IN', { month: 'short' }).format(date)
         day: new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(date),
         dayNum: date.getDate(),
         month: new Intl.DateTimeFormat('en-US', { month: 'short' }).format(date)
@@ -90,29 +93,29 @@ export default function MainFeature() {
   
   // Calculate total amount when selected seats or ticket count changes
   useEffect(() => {
-    // Base price per ticket: $12
-    // Premium seats (rows A, B): +$4
-    // IMAX format: +$5
-    // 3D format: +$3
+    // Base price per ticket: ₹350
+    // Premium seats (rows A, B): +₹150
+    // IMAX format: +₹200
+    // 3D format: +₹100
     
     let seatPricing = selectedSeats.map(seat => {
-      let price = 12; // Base price
+      let price = 350; // Base price
       
       // Premium rows
       if (seat.startsWith('A') || seat.startsWith('B')) {
-        price += 4;
+        price += 150;
       }
       
       // Format premium
       if (selectedFormat === "IMAX") {
-        price += 5;
+        price += 200;
       } else if (selectedFormat === "3D") {
-        price += 3;
+        price += 100;
       }
       
       return price;
     });
-    
+
     setTotalAmount(seatPricing.reduce((sum, price) => sum + price, 0));
   }, [selectedSeats, selectedFormat]);
   
@@ -216,7 +219,7 @@ export default function MainFeature() {
   return (
     <section id="booking-section" className="mb-16">
       <div className="mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2">Book Tickets</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">{t('bookTickets')}</h2>
         <p className="text-surface-500">Reserve your seats for the latest shows in just a few clicks</p>
       </div>
       
@@ -306,7 +309,7 @@ export default function MainFeature() {
                   {totalAmount > 0 && (
                     <div className="flex justify-between border-t pt-2 mt-2">
                       <span className="font-semibold">Total:</span>
-                      <span className="font-semibold text-primary">${totalAmount.toFixed(2)}</span>
+                      <span className="font-semibold text-primary">{formatCurrency(totalAmount)}</span>
                     </div>
                   )}
                 </div>
@@ -582,11 +585,11 @@ export default function MainFeature() {
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
                           <span>Regular Seats (Rows C-F)</span>
-                          <span className="font-medium">$12.00</span>
+                          <span className="font-medium">{formatCurrency(350)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Premium Seats (Rows A-B)</span>
-                          <span className="font-medium">$16.00</span>
+                          <span className="font-medium">{formatCurrency(500)}</span>
                         </div>
                         {selectedFormat && (
                           <div className="flex justify-between">
@@ -624,20 +627,20 @@ export default function MainFeature() {
                       </div>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-surface-500">Tickets ({ticketCount}x)</span>
+                        <span className="font-bold">{formatCurrency(totalAmount)}</span>
                           <span>${(totalAmount - 3.50).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-surface-500">Booking Fee</span>
-                          <span>$3.50</span>
+                          <span>{formatCurrency(totalAmount - 50)}</span>
                         </div>
                         <div className="pt-2 mt-2 border-t border-surface-200 dark:border-surface-600 flex justify-between font-bold">
                           <span>Total</span>
-                          <span className="text-primary">${(totalAmount + 3.50).toFixed(2)}</span>
+                          <span>{formatCurrency(50)}</span>
                         </div>
                       </div>
                     </div>
-                    
+                          <span className="text-primary">{formatCurrency(totalAmount + 50)}</span>
                     {/* Payment Form */}
                     <div className="mb-8">
                       <h4 className="font-medium mb-4 flex items-center gap-2">
@@ -721,7 +724,7 @@ export default function MainFeature() {
                   {currentStep < 3 ? <ArrowRightIcon size={18} /> : <ThumbsUpIcon size={18} />}
                 </button>
               </div>
-            </div>
+                  <span>{currentStep === 3 ? 'Confirm Payment' : 'Continue'}</span>
           </div>
         </div>
       </div>
