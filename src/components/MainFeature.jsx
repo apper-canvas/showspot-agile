@@ -216,8 +216,8 @@ export default function MainFeature() {
   return (
     <section id="booking-section" className="mb-16">
       <div className="mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2">Quick Booking</h2>
-        <p className="text-surface-500">Book tickets for the latest shows in just a few clicks</p>
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">Book Tickets</h2>
+        <p className="text-surface-500">Reserve your seats for the latest shows in just a few clicks</p>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
