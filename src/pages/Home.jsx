@@ -79,7 +79,7 @@ const categories = [
 ];
 
 const locations = [
-  "New York", "Los Angeles", "Chicago", "Houston", "Miami", "San Francisco"
+  "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Kochi"
 ];
 
 export default function Home() {
